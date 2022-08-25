@@ -91,8 +91,6 @@ public class DisplayBoard : MonoBehaviour
                 int y = (int)rootPosition.y - layer * layerHeight;
                 GameObject obj = InstantiateNode(gn, new Vector3(x, y, 0));
                 lastX = x + obj.GetComponent<UISprite>().width / 2;     // 记录本次生成的节点位置
-                foreach (IntWithObject value in gn.node.values)         // 为数值绑定对象
-                    value.obj = obj;
                 ++layerCount;
 
                 // 添加子节点
@@ -122,21 +120,21 @@ public class DisplayBoard : MonoBehaviour
     /// <returns>各层的节点数</returns>
     private void GetLayerCount(List<int> layerCountList, List<int> valueCountList)
     {
-        BTree<IntWithObject>.BTreeNode<IntWithObject> cur = UnityBTree.Instance.Root;
+        BTree<int>.BTreeNode<int> cur = UnityBTree.Instance.Root;
         
-        Queue<BTree<IntWithObject>.BTreeNode<IntWithObject>> queue = new Queue<BTree<IntWithObject>.BTreeNode<IntWithObject>>();
+        Queue<BTree<int>.BTreeNode<int>> queue = new Queue<BTree<int>.BTreeNode<int>>();
         queue.Enqueue(cur);
         while (true)
         {
             int layerCount = 0, valueCount = 0;
-            Queue<BTree<IntWithObject>.BTreeNode<IntWithObject>> temp = new Queue<BTree<IntWithObject>.BTreeNode<IntWithObject>>();
+            Queue<BTree<int>.BTreeNode<int>> temp = new Queue<BTree<int>.BTreeNode<int>>();
             while (queue.Count > 0)
             {
-                BTree<IntWithObject>.BTreeNode<IntWithObject> child = queue.Dequeue();
+                BTree<int>.BTreeNode<int> child = queue.Dequeue();
                 ++layerCount;
                 valueCount += child.values.Count;
                 if (child.children[0] != null)
-                    foreach (BTree<IntWithObject>.BTreeNode<IntWithObject> node in child.children)
+                    foreach (BTree<int>.BTreeNode<int> node in child.children)
                         temp.Enqueue(node);
             }
             layerCountList.Add(layerCount);
@@ -187,14 +185,14 @@ public class DisplayBoard : MonoBehaviour
 
     private class GameObjectNode
     {
-        public GameObjectNode(BTree<IntWithObject>.BTreeNode<IntWithObject> node) : this(node, null, 0) { }
-        public GameObjectNode(BTree<IntWithObject>.BTreeNode<IntWithObject> node, GameObject parent, int num)
+        public GameObjectNode(BTree<int>.BTreeNode<int> node) : this(node, null, 0) { }
+        public GameObjectNode(BTree<int>.BTreeNode<int> node, GameObject parent, int num)
         {
             this.node = node;
             this.parent = parent;
             childNum = num;
         }
-        public BTree<IntWithObject>.BTreeNode<IntWithObject> node;
+        public BTree<int>.BTreeNode<int> node;
         public GameObject parent;
         public int childNum;
     }

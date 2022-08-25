@@ -13,7 +13,7 @@ public class ButtonWithInput : MonoBehaviour
     {
         if (input.value != "")
         {
-            if (UnityBTree.Instance.Add(new IntWithObject(int.Parse(Summit()))))
+            if (UnityBTree.Instance.Add(int.Parse(Summit())))
                 UnityBTree.Instance.Show();
         }
     }
@@ -24,7 +24,7 @@ public class ButtonWithInput : MonoBehaviour
     {
         if (input.value != "")
         {
-            if (UnityBTree.Instance.Remove(new IntWithObject(int.Parse(Summit()))))
+            if (UnityBTree.Instance.Remove(int.Parse(Summit())))
                 UnityBTree.Instance.Show();
         }
     }
@@ -35,11 +35,7 @@ public class ButtonWithInput : MonoBehaviour
     {
         if (input.value != "")
         {
-            IntWithObject result = UnityBTree.Instance.Find(new IntWithObject(int.Parse(Summit())));
-            if (result != null)
-            {
-
-            }
+            
         }
     }
 
@@ -59,7 +55,7 @@ public class ButtonWithInput : MonoBehaviour
     {
         int num = int.Parse(Summit(true));
         for (int i = 0; i < num; ++i)
-            UnityBTree.Instance.Add(new IntWithObject(Random.Range(BTreeMgr.Instance.addMin, BTreeMgr.Instance.addMax + 1)));
+            UnityBTree.Instance.Add(Random.Range(BTreeMgr.Instance.addMin, BTreeMgr.Instance.addMax + 1));
         UnityBTree.Instance.Show();
     }
 
@@ -82,12 +78,8 @@ public class ButtonWithInput : MonoBehaviour
     }
     public void RemoveRange()
     {
-        IntWithObject temp = new IntWithObject(0);
         for (int i = BTreeMgr.Instance.removeMin; i <= BTreeMgr.Instance.removeMax; ++i)
-        {
-            temp.value = i;
-            UnityBTree.Instance.Remove(temp);
-        }
+            UnityBTree.Instance.Remove(i);
         UnityBTree.Instance.Show();
     }
 

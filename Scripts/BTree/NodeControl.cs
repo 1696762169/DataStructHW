@@ -35,7 +35,7 @@ public class NodeControl : MonoBehaviour
     /// 创建节点对象
     /// </summary>
     /// <param name="node">节点信息</param>
-    public void CreateObject(BTree<IntWithObject>.BTreeNode<IntWithObject> node)
+    public void CreateObject(BTree<int>.BTreeNode<int> node)
     {
         // 设置自身大小
         UISprite sprite = GetComponent<UISprite>();
@@ -47,7 +47,7 @@ public class NodeControl : MonoBehaviour
         {
             GameObject obj = Instantiate(number, transform);
             obj.transform.localPosition = new Vector3(midWidth * i - midWidth * vc / 2, 0, 0);
-            obj.GetComponent<UILabel>().text = node.values[i].value.ToString();
+            obj.GetComponent<UILabel>().text = node.values[i].ToString();
         }
     }
 }

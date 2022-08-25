@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class UnityBTree : BTree<IntWithObject>
+public class UnityBTree : BTree<int>
 {
     private static UnityBTree instance = new UnityBTree(3);
     public static UnityBTree Instance => instance;
-    public BTreeNode<IntWithObject> Root => root;
+    public BTreeNode<int> Root => root;
 
     public GameObject displayContent;
     private UnityBTree(int rank) : base(rank) { }
@@ -20,11 +20,4 @@ public class UnityBTree : BTree<IntWithObject>
     }
 
     public void Init(int rank) => instance = new UnityBTree(rank);
-}
-public class IntWithObject : IComparable<IntWithObject>
-{
-    public IntWithObject(int value) => this.value = value;
-    public int value;
-    public GameObject obj;
-    public int CompareTo(IntWithObject other) => value - other.value;
 }
