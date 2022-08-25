@@ -5,6 +5,32 @@ using UnityEngine.Events;
 public class ButtonWithInput : MonoBehaviour
 {
     public UIInput input;
+    private UIButton button;
+
+    protected void Start()
+    {
+        button = GetComponent<UIButton>();
+        if (button == null)
+            return;
+
+        // 为除Find功能外的按钮/输入框绑定清除查找路径显示框的方法
+        bool find = false;
+        foreach (var ed in button.onClick)
+        {
+            if (ed.methodName == "Find")
+            {
+                find = true;
+                break;
+            }
+        }
+        if (!find)
+        {
+            EventDelegate clear = new EventDelegate(() => BTreeMgr.Instance.ShowFindingPath(true));
+            button.onClick.Add(clear);
+            if (input != null)
+                input.onSubmit.Add(clear);
+        }
+    }
 
     /// <summary>
     /// 添加节点
@@ -35,7 +61,8 @@ public class ButtonWithInput : MonoBehaviour
     {
         if (input.value != "")
         {
-            
+            UnityBTree.Instance.Find(int.Parse(Summit()));
+            BTreeMgr.Instance.ShowFindingPath(false);
         }
     }
 
@@ -64,14 +91,14 @@ public class ButtonWithInput : MonoBehaviour
     /// </summary>
     public void RemoveRangeMin()
     {
-        if (input.value == null)
+        if (input.value == "")
             BTreeMgr.Instance.removeMin = BTreeMgr.Instance.addMin;
         else
             BTreeMgr.Instance.removeMin = int.Parse(Summit());
     }
     public void RemoveRangeMax()
     {
-        if (input.value == null)
+        if (input.value == "")
             BTreeMgr.Instance.removeMax = BTreeMgr.Instance.addMax;
         else
             BTreeMgr.Instance.removeMax = int.Parse(Summit());
@@ -81,6 +108,22 @@ public class ButtonWithInput : MonoBehaviour
         for (int i = BTreeMgr.Instance.removeMin; i <= BTreeMgr.Instance.removeMax; ++i)
             UnityBTree.Instance.Remove(i);
         UnityBTree.Instance.Show();
+    }
+
+    /// <summary>
+    /// 设置阶数
+    /// </summary>
+    public void SetRank()
+    {
+        if (input.value != "")
+        {
+            int rank = int.Parse(Summit());
+            if (rank >= 3)
+            {
+                UnityBTree.Instance.Init(rank);
+                UnityBTree.Instance.Show();
+            }
+        }
     }
 
     /// <summary>
